@@ -37,8 +37,8 @@ INSTALLED_APPS = (
 
     'advanced_filters',
 
-    'tests.reps',
-    'tests.customers',
+    'reps',
+    'customers',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,8 +50,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'tests.test_project.urls'
-WSGI_APPLICATION = 'tests.test_project.wsgi.application'
+ROOT_URLCONF = 'test_project.urls'
+WSGI_APPLICATION = 'test_project.wsgi.application'
 
 AUTH_USER_MODEL = 'reps.SalesRep'
 TEMPLATES = [

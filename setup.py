@@ -64,7 +64,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-braces==1.4.0',
-        'simplejson==3.6.5',
+        'simplejson==3.6.5', 'django',
     ],
     extras_require=dict(test=TEST_REQS),
     zip_safe=False,

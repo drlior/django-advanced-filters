@@ -1,32 +1,27 @@
 from datetime import datetime as dt
+from functools import reduce
 from pprint import pformat
 import logging
 import operator
 
 from django import forms
 
-try:
-    from django.apps import apps
-    get_model = apps.get_model
-except ImportError:
-    # django < 1.7 support
-    from django.db.models import get_model
+
+from django.apps import apps
+get_model = apps.get_model
 
 from django.conf import settings
 from django.contrib import admin
 
-try:
-    from django.contrib.admin.utils import get_fields_from_path
-except ImportError:
-    # django < 1.7 support
-    from django.contrib.admin.util import get_fields_from_path
+
+from django.contrib.admin.utils import get_fields_from_path
 
 from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
-from django.utils.six.moves import range, reduce
+# from django.utils.six.moves import range, reduce
 from django.utils.text import capfirst
 
 import django
@@ -189,8 +184,10 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             query = query & Q(**query_dict)
         return query
 
-    def __init__(self, model_fields={}, *args, **kwargs):
+    def __init__(self, model_fields=None, *args, **kwargs):
         super(AdvancedFilterQueryForm, self).__init__(*args, **kwargs)
+        if model_fields is None:
+            model_fields = {}
         self.FIELD_CHOICES = self._build_field_choices(model_fields)
         self.fields['field'].choices = self.FIELD_CHOICES
         if not self.fields['field'].initial:
@@ -284,7 +281,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                         model_field = get_fields_from_path(model, field)[-1]
                         verbose_name = model_field.verbose_name
                     except (FieldDoesNotExist, IndexError, TypeError) as e:
-                        logger.warn("AdvancedFilterForm: skip invalid field "
+                        logger.warning("AdvancedFilterForm: skip invalid field "
                                     "- %s", e)
                         continue
                 model_fields[field] = verbose_name

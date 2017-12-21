@@ -1,4 +1,4 @@
-import factory
+from factory_boy import factory
 
 
 class SalesRep(factory.django.DjangoModelFactory):
